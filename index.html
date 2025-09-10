@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8" />
-    <title>Conversor de Tensão (Vpp ↔ Vrms e -3 dB)</title>
+    <title>Conversor de Tensão (Vpp ↔ Vrms, -3 dB e +3 dB)</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <style>
@@ -100,53 +101,42 @@
             margin-top: 10px;
         }
 
-        /* DARK MODE */
-        /*@media (prefers-color-scheme: dark) {
-            body {
-                background-color: #121212;
-                background-image: none;
-            }*/
+        .container-dark {
+            background-color: rgba(170, 163, 163, 0.95);
+            color: #161515;
+            box-shadow: 0 8px 25px rgba(10, 10, 10, 0.5);
+        }
 
-            .container {
-                background-color: rgba(170, 163, 163, 0.95);
-                color: #161515;
-                box-shadow: 0 8px 25px rgba(10, 10, 10, 0.5);
-            }
+        input {
+            background-color: #f5f1f1;
+            color: #050505;
+            border: 1px solid #111111;
+        }
 
-            label {
-                color: #0e0d0d;
-            }
+        button {
+            background-color: #07aa1d;
+        }
 
-            input {
-                background-color: #f5f1f1;
-                color: #050505;
-                border: 1px solid #111111;
-            }
+        button:hover {
+            background-color: #0ef50e;
+        }
 
-            button {
-                background-color: #07aa1d;
-            }
+        .result {
+            background: #b4f5ca;
+            color: #111;
+            box-shadow: none;
+        }
 
-            button:hover {
-                background-color: #0ef50e;
-            }
-
-            .result {
-                background: #b4f5ca;
-                color: #ddd;
-                box-shadow: none;
-            }
-
-            .note {
-                color: #aaa;
-            }
+        .note {
+            color: #555;
+        }
     </style>
 </head>
 
 <body>
     <div class="container">
-        <h1><b>Autor:Ruberlandio</b></h1>
-        <h2>Conversor de Tensão(Senoidal)</h2>
+        <h1><b>Autor: Ruberlandio</b></h1>
+        <h2>Conversor de Tensão (Senoidal)</h2>
 
         <label for="vpp">Tensão Pico a Pico (Vpp):</label>
         <input type="number" id="vpp" step="any" placeholder="Ex: 5" oninput="limparVrms()" />
@@ -192,24 +182,36 @@
                 return;
             }
 
-            const vpp3db = vpp * 0.707;
-            const vrms3db = vrms * 0.707;
+            // Cálculo -3 dB (atenuação)
+            const vppMenos3db = vpp * 0.707;
+            const vrmsMenos3db = vrms * 0.707;
+
+            // Cálculo +3 dB (ganho)
+            const vppMais3db = vpp * 1.412;
+            const vrmsMais3db = vrms * 1.412;
 
             document.getElementById("resultado").innerHTML = `
-        <p><strong>Resultado:</strong></p>
-        <ul>
-            <li><strong>Vpp:</strong> ${formatar(vpp)} V</li>
-            <li><strong>Vrms:</strong> ${formatar(vrms)} V</li>
-        </ul>
-        <p><strong>Com atenuação de -3 dB:</strong></p>
-        <ul>
-            <li><strong>Vpp (-3 dB):</strong> ${formatar(vpp3db)} V</li>
-            <li><strong>Vrms (-3 dB):</strong> ${formatar(vrms3db)} V</li>
-        </ul>
-        <p class="note">* Supondo sinal senoidal puro.</p>
-      `;
+                <p><strong>Resultado:</strong></p>
+                <ul>
+                    <li><strong>Vpp:</strong> ${formatar(vpp)} V</li>
+                    <li><strong>Vrms:</strong> ${formatar(vrms)} V</li>
+                </ul>
+                <p><strong>Com atenuação de -3 dB:</strong></p>
+                <ul>
+                    <li><strong>Vpp (-3 dB):</strong> ${formatar(vppMenos3db)} V</li>
+                    <li><strong>Vrms (-3 dB):</strong> ${formatar(vrmsMenos3db)} V</li>
+                </ul>
+                <p><strong>Com ganho de +3 dB:</strong></p>
+                <ul>
+                    <li><strong>Vpp (+3 dB):</strong> ${formatar(vppMais3db)} V</li>
+                    <li><strong>Vrms (+3 dB):</strong> ${formatar(vrmsMais3db)} V</li>
+                </ul>
+                <p class="note">* Supondo sinal senoidal puro.</p>
+            `;
         }
     </script>
 </body>
 
 </html>
+
+
