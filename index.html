@@ -2,290 +2,273 @@
 <html lang="pt-BR">
 
 <head>
-    <meta charset="UTF-8">
-    <title>Conversor Vpp ↔ Vrms + dB</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<title>Conversor Vpp ↔ Vrms + dB</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <style>
-        * {
-            box-sizing: border-box;
-        }
+<style>
+*{box-sizing:border-box;}
 
-        body {
+body{
+background-image:url(https://picsum.photos/1920/1080);
+padding:15px;
+font-family:Arial, Helvetica, sans-serif;
+display:flex;
+justify-content:center;
+align-items:center;
+min-height:100vh;
+color:#111;
+}
 
-            background-image: url(https://picsum.photos/1920/1080);
-            padding: 15px;
-            font-family: Arial, Helvetica, sans-serif;
-          /*  background: #101820;*/
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            color: #111;
-        }
+.container{
+background:white;
+padding:18px;
+border-radius:14px;
+max-width:420px;
+width:100%;
+box-shadow:0 10px 25px rgba(0,0,0,0.4);
+}
 
-        .container {
-            background: white;
-            padding: 18px;
-            border-radius: 14px;
-            max-width: 420px;
-            width: 100%;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
-        }
+h1{
+text-align:center;
+font-size:20px;
+margin-bottom:10px;
+color:#1a237e;
+}
 
-        h1 {
-            text-align: center;
-            font-size: 20px;
-            margin-bottom: 10px;
-            color: #1a237e;
-        }
+label{
+font-weight:bold;
+margin-top:12px;
+display:block;
+font-size:14px;
+}
 
-        label {
-            font-weight: bold;
-            margin-top: 12px;
-            display: block;
-            font-size: 14px;
-        }
+input[type=number]{
+width:100%;
+padding:12px;
+font-size:16px;
+margin-top:4px;
+border-radius:8px;
+border:1px solid #999;
+}
 
-        input[type=number] {
-            width: 100%;
-            padding: 12px;
-            font-size: 16px;
-            margin-top: 4px;
-            border-radius: 8px;
-            border: 1px solid #999;
-        }
+.slider{
+width:100%;
+margin-top:10px;
+}
 
-        .slider {
-            width: 100%;
-            margin-top: 10px;
-        }
+.vuBar{
+width:100%;
+height:22px;
+border-radius:6px;
+background:linear-gradient(90deg,
+#00ff00 0%,
+#00ff00 55%,
+yellow 70%,
+orange 85%,
+red 100%);
+margin-top:10px;
+position:relative;
+overflow:hidden;
+}
 
-        .vuBar {
-            width: 100%;
-            height: 22px;
-            border-radius: 6px;
-            background: linear-gradient(90deg,
-                    #00ff00 0%,
-                    #00ff00 55%,
-                    yellow 70%,
-                    orange 85%,
-                    red 100%);
-            margin-top: 10px;
-            position: relative;
-            overflow: hidden;
-        }
+.vuMask{
+position:absolute;
+right:0;
+top:0;
+height:100%;
+width:50%;
+background:#111;
+transition:width .15s;
+}
 
-        .vuMask {
-            position: absolute;
-            right: 0;
-            top: 0;
-            height: 100%;
-            width: 50%;
-            background: #111;
-            transition: width .15s;
-        }
+.dbDisplay{
+text-align:center;
+font-size:18px;
+font-weight:bold;
+margin-top:6px;
+}
 
-        .dbDisplay {
-            text-align: center;
-            font-size: 18px;
-            font-weight: bold;
-            margin-top: 6px;
-        }
+.dbControls{
+display:flex;
+gap:6px;
+margin-top:8px;
+}
 
-        .dbControls {
-            display: flex;
-            gap: 6px;
-            margin-top: 8px;
-        }
+.dbControls button{
+flex:1;
+padding:10px;
+font-size:18px;
+border:none;
+border-radius:8px;
+background:#1a237e;
+color:white;
+}
 
-        .dbControls button {
-            flex: 1;
-            padding: 10px;
-            font-size: 18px;
-            border: none;
-            border-radius: 8px;
-            background: #1a237e;
-            color: white;
-        }
+.dbControls button:active{
+background:#3949ab;
+}
 
-        .dbControls button:active {
-            background: #3949ab;
-        }
+.result{
+margin-top:15px;
+padding:14px;
+border-radius:10px;
+background:#e8f5e9;
+font-size:15px;
+}
 
-        .result {
-            margin-top: 15px;
-            padding: 14px;
-            border-radius: 10px;
-            background: #e8f5e9;
-            font-size: 15px;
-        }
+.result ul{
+padding-left:18px;
+margin:5px 0;
+}
 
-        .result ul {
-            padding-left: 18px;
-            margin: 5px 0;
-        }
-
-        .result li {
-            margin: 4px 0;
-        }
-    </style>
+.result li{
+margin:4px 0;
+}
+</style>
 </head>
 
 <body>
 
-    <div class="container">
+<div class="container">
 
-        <h1>Conversor Vpp ↔ Vrms</h1>
+<h1>Conversor Vpp ↔ Vrms</h1>
 
-        <label>Vpp (pico a pico)</label>
-        <input type="number" id="vpp" step="any" oninput="converter('vpp')">
+<label>Vpp (pico a pico)</label>
+<input type="number" id="vpp" step="any" oninput="converter('vpp')">
 
-        <label>Vrms</label>
-        <input type="number" id="vrms" step="any" oninput="converter('vrms')">
+<label>Vrms</label>
+<input type="number" id="vrms" step="any" oninput="converter('vrms')">
 
-        <label>Variação em dB</label>
+<label>Variação em dB</label>
 
-        <input type="range" id="dbSlider" class="slider" min="-60" max="60" value="0" step="0.1" oninput="sliderDB()">
+<input type="range" id="dbSlider" class="slider" min="-60" max="60" value="0" step="0.1" oninput="sliderDB()">
 
-        <div class="vuBar">
-            <div class="vuMask" id="vuMask"></div>
-        </div>
+<div class="vuBar">
+<div class="vuMask" id="vuMask"></div>
+</div>
 
-        <div class="dbDisplay">
-            <span id="dbValor">0</span> dB
-        </div>
+<div class="dbDisplay">
+<span id="dbValor">0</span> dB
+</div>
 
-        <input type="number" id="dbInput" step="0.1" value="0" oninput="digitarDB()">
+<input type="number" id="dbInput" step="0.1" value="0" oninput="digitarDB()">
 
-        <div class="dbControls">
-            <button onclick="ajustarDB(-1)">−1 dB</button>
-            <button onclick="ajustarDB(1)">+1 dB</button>
-        </div>
+<div class="dbControls">
+<button onclick="ajustarDB(-1)">−1 dB</button>
+<button onclick="ajustarDB(1)">+1 dB</button>
+</div>
 
-        <div class="result" id="resultado"></div>
+<div class="result" id="resultado"></div>
 
-    </div>
+</div>
 
-    <script>
+<script>
 
-        let db = 0;
+let db = 0;
 
-        function formatar(v) {
-            return new Intl.NumberFormat("pt-BR", { maximumFractionDigits: 4 }).format(v);
-        }
+function formatar(v){
+return Number(v).toFixed(3).replace(".",",");
+}
 
-        function atualizarVU() {
+function atualizarVU(){
 
-            let slider = document.getElementById("dbSlider");
+let slider=document.getElementById("dbSlider");
 
-            let min = Number(slider.min);
-            let max = Number(slider.max);
-            let val = Number(slider.value);
+let min=Number(slider.min);
+let max=Number(slider.max);
+let val=Number(slider.value);
 
-            let percent = (val - min) / (max - min) * 100;
+let percent=(val-min)/(max-min)*100;
 
-            document.getElementById("vuMask").style.width = (100 - percent) + "%";
-        }
+document.getElementById("vuMask").style.width=(100-percent)+"%";
+}
 
-        function atualizarTudo() {
+function atualizarTudo(){
 
-            document.getElementById("dbValor").innerText = formatar(db);
+document.getElementById("dbValor").innerText=formatar(db);
 
-            document.getElementById("dbSlider").value = db;
+document.getElementById("dbSlider").value=db;
 
-            document.getElementById("dbInput").value = db;
+document.getElementById("dbInput").value=db;
 
-            atualizarVU();
+atualizarVU();
 
-            converter();
+converter();
+}
 
-        }
+function sliderDB(){
 
-        function sliderDB() {
+db=parseFloat(document.getElementById("dbSlider").value);
 
-            db = parseFloat(document.getElementById("dbSlider").value);
+atualizarTudo();
+}
 
-            atualizarTudo();
+function digitarDB(){
 
-        }
+db=parseFloat(document.getElementById("dbInput").value);
 
-        function digitarDB() {
+if(isNaN(db))return;
 
-            db = parseFloat(document.getElementById("dbInput").value);
+atualizarTudo();
+}
 
-            if (isNaN(db)) return;
+function ajustarDB(v){
 
-            atualizarTudo();
+db+=v;
 
-        }
+if(db>60)db=60;
+if(db<-60)db=-60;
 
-        function ajustarDB(v) {
+atualizarTudo();
+}
 
-            db += v;
+function converter(origem){
 
-            if (db > 60) db = 60;
-            if (db < -60) db = -60;
+let vppInput=parseFloat(document.getElementById("vpp").value);
+let vrmsInput=parseFloat(document.getElementById("vrms").value);
 
-            atualizarTudo();
+let vpp,vrms;
 
-        }
+if(origem==="vpp"){
 
-        function converter(origem) {
+if(isNaN(vppInput))return;
 
-            let vppInput = parseFloat(document.getElementById("vpp").value);
-            let vrmsInput = parseFloat(document.getElementById("vrms").value);
+vpp=vppInput;
+vrms=vpp/(2*Math.sqrt(2));
 
-            let vpp, vrms;
+document.getElementById("vrms").value=formatar(vrms);
+}
 
-            if (origem === "vpp") {
+else if(origem==="vrms"){
 
-                if (isNaN(vppInput)) return;
+if(isNaN(vrmsInput))return;
 
-                vpp = vppInput;
-                vrms = vpp / (2 * Math.sqrt(2));
+vrms=vrmsInput;
+vpp=vrms*2*Math.sqrt(2);
 
-                document.getElementById("vrms").value = formatar(vrms);
+document.getElementById("vpp").value=formatar(vpp);
+}
 
-            }
+else{
 
-            else if (origem === "vrms") {
+if(!isNaN(vppInput)){
+vpp=vppInput;
+vrms=vpp/(2*Math.sqrt(2));
+}
+else if(!isNaN(vrmsInput)){
+vrms=vrmsInput;
+vpp=vrms*2*Math.sqrt(2);
+}
+else return;
+}
 
-                if (isNaN(vrmsInput)) return;
+const fator=Math.pow(10,db/20);
 
-                vrms = vrmsInput;
-                vpp = vrms * 2 * Math.sqrt(2);
+const vppDb=vpp*fator;
+const vrmsDb=vrms*fator;
 
-                document.getElementById("vpp").value = formatar(vpp);
-
-            }
-
-            else {
-
-                if (!isNaN(vppInput)) {
-
-                    vpp = vppInput;
-                    vrms = vpp / (2 * Math.sqrt(2));
-
-                }
-
-                else if (!isNaN(vrmsInput)) {
-
-                    vrms = vrmsInput;
-                    vpp = vrms * 2 * Math.sqrt(2);
-
-                }
-
-                else return;
-
-            }
-
-            const fator = Math.pow(10, db / 20);
-
-            const vppDb = vpp * fator;
-            const vrmsDb = vrms * fator;
-
-            document.getElementById("resultado").innerHTML = `
+document.getElementById("resultado").innerHTML=`
 
 <b>Resultado</b>
 
@@ -300,18 +283,15 @@
 <li>Vpp: <b>${formatar(vppDb)}</b> V</li>
 <li>Vrms: <b>${formatar(vrmsDb)}</b> V</li>
 <li>Fator: <b>${formatar(fator)}</b> x</li>
-<b> Desenvolvido Por Ruberlandio</>
 </ul>
 
+<b>Desenvolvido por Ruberlandio</b>
 `;
+}
 
-        }
+atualizarVU();
 
-        atualizarVU();
-
-    </script>
+</script>
 
 </body>
-
 </html>
-
